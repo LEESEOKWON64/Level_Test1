@@ -29,9 +29,10 @@
             public string name;
             public string detail;
             public int price;
-            public ItemProp type;
+            public ItemType type;
+            public int value;
         }
-        enum ItemProp
+        enum ItemType
         {
             weapon, shield, accessory
         }
@@ -42,8 +43,27 @@
         }
         #endregion
         #region Start
-        static void Start()
-        {
+        static void Start(out Item longSword, out Item clothArmor, out Item tearOfGoddess)
+        {            
+            longSword.name = "롱소드";
+            longSword.detail = "기본적인 검이다.";
+            longSword.price = 450;
+            longSword.type = ItemType.weapon;
+            longSword.value = 15;
+
+            clothArmor.name = "천갑옷";
+            clothArmor.detail = "얇은 갑옷이다.";
+            clothArmor.price = 450;
+            clothArmor.type = ItemType.shield;
+            clothArmor.value = 10;
+
+            tearOfGoddess.name = "여신의 눈물";
+            tearOfGoddess.detail = "희미하게 푸른빛을 품고 있는 보석이다.";
+            tearOfGoddess.price = 800;
+            tearOfGoddess.type = ItemType.accessory;
+            tearOfGoddess.value = 300;
+
+
             // 아이템 정보 - 구조체 형식으로 표현
             // 메인 메뉴 타이틀 형식
             // 보유 골드 : 10000G
@@ -52,9 +72,20 @@
         #region MainMethod
         static void Main(string[] args)
         {
-            Start();
+            bool gameOver = false;
 
-            while (true)
+            int gold = 10000;
+            int attack = 0;
+            int defense = 0;
+            int Health = 0;
+
+            Item longSword = new Item();
+            Item clothArmor = new Item();
+            Item tearOfGoddess = new Item();
+
+            Start(out longSword, out clothArmor, out tearOfGoddess);
+
+            while (gameOver = false)
             {
                 Render();
                 Input();
@@ -145,7 +176,7 @@
         {
             //아이템에 따른 수치 증가량
             //attack
-            //shield
+            //defense
             //Health
         }
         #endregion

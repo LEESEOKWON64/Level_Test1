@@ -82,12 +82,11 @@
         #region Render
         static void Render(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
-            MainMenu();     // 상점 메인 메뉴
-            MainInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+            MainMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);     // 상점 메인 메뉴            
         }
         #endregion
         #region MainMenu
-        static void MainMenu()
+        static void MainMenu(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
             Console.Clear();
             Console.SetCursorPosition(0, 0);
@@ -99,9 +98,8 @@
             Console.WriteLine("2. 아이템 판매");
             Console.WriteLine("3. 아이템 확인");
             Console.Write("메뉴를 선택하세요 : ");
-            // 아이템 구매, 판매, 확인 메뉴로 갈 수 있는 허브
-            // 상점 메뉴 (1. 아이템 구매, 2. 아이템 판매, 3. 아이템 확인)
-            // 메뉴를 선택하세요 : 
+
+            MainInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
         }
         #endregion
         #region ItemBuyMenu
@@ -149,7 +147,7 @@
         }
         #endregion
         #region ItemConfigMenu
-        static void ItemConfigMenu(List<Item> inventory, int gold, int attack, int defense, int health)
+        static void ItemConfigMenu(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
             Console.Clear();
             Console.SetCursorPosition(0, 0);
@@ -181,7 +179,7 @@
                 Console.Write("보유하신 아이템이 없습니다.\n\n계속하려면 아무키나 입력하세요 : ");
             }
 
-            string key = Console.ReadLine();
+            ConfigMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
 
             //=======아이템 확인=======
             //플레이어 골드 보유량 : {}G
@@ -208,12 +206,13 @@
                     ItemSellMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
                 case "3":
-                    ItemConfigMenu(inventory, gold, attack, defense, health);
+                    ItemConfigMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
                 case "0":
                     Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
                 default:
+                    MainMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
             }
         }
@@ -257,6 +256,7 @@
             }
         }
         #endregion
+        #region SellMenuInput
         static void SellMenuInput(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
             Console.Write("판매할 아이템을 선택하세요 (취소 0) : ");
@@ -305,7 +305,21 @@
                 ItemSellMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
             }
         }
+        #endregion
+        static void ConfigMenuInput(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
+        {
+            string key = Console.ReadLine();
 
+            switch (key)
+            {
+                case "0":
+                    Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                    break;
+                default:
+                    Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                    break;
+            }
+        }
         #region Update
         static void Update()
         {

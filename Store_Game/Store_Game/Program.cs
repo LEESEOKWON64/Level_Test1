@@ -125,14 +125,15 @@
             Console.WriteLine("");
             if (inventory == null || inventory.Count == 0)
             {
-                Console.WriteLine("보유하신 아이템이 없습니다. (뒤로 돌아가기 0)\n");
-                string key = Console.ReadLine();
+                Console.Write("보유하신 아이템이 없습니다. (돌아가기 0)");
+                ConsoleKey key = Console.ReadKey().Key;
                 switch (key)
                 {
-                    case "0":
+                    case ConsoleKey.D0:
                         Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                         break;
                     default:
+                        ItemSellMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                         break;
                 }
             }
@@ -221,39 +222,126 @@
         static void BuyMenuInput(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
             Console.Write("구매할 아이템을 선택하세요 (취소 0) : ");
-            string key = Console.ReadLine();
+            ConsoleKey key = Console.ReadKey().Key;
             Console.WriteLine("");
 
             switch (key)
             {
-                case "1":
-                    Console.WriteLine($"{longSword.name}를 구매합니다.");
-                    Console.WriteLine($"플레이어의 {longSword.enfo}이 {longSword.value} 상승하여 {attack += longSword.value}이(가) 됩니다.");
-                    Console.WriteLine($"보유한 골드가 {longSword.price} 감소하여 {gold -= longSword.price}G가 됩니다.\n");
-                    inventory.Add(longSword);
-                    BuyMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                case ConsoleKey.D1:
+                    if (inventory.Count < 5)
+                    {
+                        Console.WriteLine($"{longSword.name}를 구매합니다.");
+                        Console.WriteLine($"플레이어의 {longSword.enfo}이 {longSword.value} 상승하여 {attack += longSword.value}이(가) 됩니다.");
+                        Console.WriteLine($"보유한 골드가 {longSword.price} 감소하여 {gold -= longSword.price}G가 됩니다.\n");
+                        inventory.Add(longSword);
+                        Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                        ConsoleKey key1 = Console.ReadKey().Key;
+                        switch (key1)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("인벤토리가 가득 차 더 이상 구매할 수 없습니다.");
+                        Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                        ConsoleKey key2 = Console.ReadKey().Key;
+                        switch (key2)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                    }
                     break;
-                case "2":
-                    Console.WriteLine($"{clothArmor.name}를 구매합니다.");
-                    Console.WriteLine($"플레이어의 {clothArmor.enfo}이 {clothArmor.value} 상승하여 {defense += clothArmor.value}이 됩니다.");
-                    Console.WriteLine($"보유한 골드가 {clothArmor.price} 감소하여 {gold -= clothArmor.price}G가 됩니다.\n");
-                    inventory.Add(clothArmor);
-                    BuyMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                case ConsoleKey.D2:
+                    if (inventory.Count < 5)
+                    {
+                        Console.WriteLine($"{clothArmor.name}를 구매합니다.");
+                        Console.WriteLine($"플레이어의 {clothArmor.enfo}이 {clothArmor.value} 상승하여 {defense += clothArmor.value}이 됩니다.");
+                        Console.WriteLine($"보유한 골드가 {clothArmor.price} 감소하여 {gold -= clothArmor.price}G가 됩니다.\n");
+                        inventory.Add(clothArmor);
+                        Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                        ConsoleKey key3 = Console.ReadKey().Key;
+                        switch (key3)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("인벤토리가 가득 차 더 이상 구매할 수 없습니다.");
+                        Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                        ConsoleKey key4 = Console.ReadKey().Key;
+                        switch (key4)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                    }
                     break;
-                case "3":
+                case ConsoleKey.D3:
                     Console.WriteLine($"{tearOfGoddess.name}를 구매합니다.");
                     Console.WriteLine($"플레이어의 {tearOfGoddess.enfo}이 {tearOfGoddess.value} 상승하여 {health += tearOfGoddess.value}이 됩니다.");
                     Console.WriteLine($"보유한 골드가 {tearOfGoddess.price} 감소하여 {gold -= tearOfGoddess.price}G가 됩니다.\n");
                     inventory.Add(tearOfGoddess);
-                    BuyMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                    Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                    ConsoleKey key5 = Console.ReadKey().Key;
+                    if (inventory.Count < 5)
+                    {
+                        switch (key5)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("인벤토리가 가득 차 더 이상 구매할 수 없습니다.");
+                        Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                        ConsoleKey key6 = Console.ReadKey().Key;
+                        switch (key6)
+                        {
+                            case ConsoleKey.D0:
+                                Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                            default:
+                                ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                break;
+                        }
+                    }
                     break;
-                case "0":
+                case ConsoleKey.D0:
                     Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
                 default:
                     ItemBuyMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
             }
+
+
         }
         #endregion
         #region SellMenuInput
@@ -274,7 +362,17 @@
                             Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {attack -= inventory[i - 1].value}이(가) 됩니다.");
                             Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
                             inventory.Remove(inventory[i - 1]);
-                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                            Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                            ConsoleKey key1 = Console.ReadKey().Key;
+                            switch (key1)
+                            {
+                                case ConsoleKey.D0:
+                                    Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                                default:
+                                    SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                            }
                         }
                         else if (inventory[i - 1].Equals(clothArmor))
                         {
@@ -282,7 +380,17 @@
                             Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {defense -= inventory[i - 1].value}이(가) 됩니다.");
                             Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
                             inventory.Remove(inventory[i - 1]);
-                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                            Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                            ConsoleKey key2 = Console.ReadKey().Key;
+                            switch (key2)
+                            {
+                                case ConsoleKey.D0:
+                                    Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                                default:
+                                    SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                            }
                         }
                         else if (inventory[i - 1].Equals(tearOfGoddess))
                         {
@@ -290,12 +398,20 @@
                             Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {health -= inventory[i - 1].value}이(가) 됩니다.");
                             Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
                             inventory.Remove(inventory[i - 1]);
-                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                            Console.Write("계속하려면 아무키나 입력하세요 (돌아가기 0) : ");
+                            ConsoleKey key3 = Console.ReadKey().Key;
+                            switch (key3)
+                            {
+                                case ConsoleKey.D0:
+                                    Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                                default:
+                                    SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                                    break;
+                            }
                         }
                     }
-
                 }
-
             else if (key == "0")
             {
                 Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
@@ -306,13 +422,14 @@
             }
         }
         #endregion
+        #region ConfigMenuInput
         static void ConfigMenuInput(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
-            string key = Console.ReadLine();
+            ConsoleKey key = Console.ReadKey().Key;
 
             switch (key)
             {
-                case "0":
+                case ConsoleKey D0:
                     Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
                     break;
                 default:
@@ -320,6 +437,7 @@
                     break;
             }
         }
+        #endregion
         #region Update
         static void Update()
         {

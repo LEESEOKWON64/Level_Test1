@@ -122,29 +122,30 @@
         static void ItemSellMenu(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
             Console.SetCursorPosition(0, 0);
-            Console.Clear();           
+            Console.Clear();
             Console.WriteLine("========= 아이템 판매 =========");
             Console.WriteLine("");
-            if (inventory != null)
+            if (inventory == null || inventory.Count == 0)
+            {
+                Console.WriteLine("보유하신 아이템이 없습니다. (뒤로 돌아가기 0)\n");
+                string key = Console.ReadLine();
+                switch (key)
+                {
+                    case "0":
+                        Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
             {
                 for (int i = 0; i < inventory.Count; i++)
                 {
-                        Console.WriteLine($"{i + 1}. {inventory[i].name}\n   가격 : {inventory[i].price}\n   설명 : {inventory[i].detail}\n   {inventory[i].enfo} 상승 : {inventory[i].value}\n");
+                    Console.WriteLine($"{i + 1}. {inventory[i].name}\n   가격 : {inventory[i].price}\n   설명 : {inventory[i].detail}\n   {inventory[i].enfo} 상승 : {inventory[i].value}\n");
                 }
-                Console.Write("판매할 아이템을 선택하세요 (취소 0) : ");
-            }                         
-            else
-            {
-                Console.WriteLine("보유하신 아이템이 없습니다. (뒤로 돌아가기 0)\n");
             }
-
             SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
-            //아이템 목록 : 1. 롱소드(attack), 2. 천갑옷(shield), 3. 여신의 눈물(accesory)
-            //아이템 정보 : 가격, 설명, 하락 수치
-            //판매할 아이템 선택해주세요.(취소 : 0) :
-            //{}을 판매합니다.
-            //플레이어의 공격력이 {}감소하여 {}이 됩니다.
-            //보유한 골드가 {}G 상승하여 {]G가 됩니다.
         }
         #endregion
         #region ItemConfigMenu
@@ -258,32 +259,53 @@
         #endregion
         static void SellMenuInput(ref int gold, Item longSword, Item clothArmor, Item tearOfGoddess, ref int attack, ref int defense, ref int health, ref List<Item> inventory)
         {
-            Console.Write("구매할 아이템을 선택하세요 (취소 0) : ");
+            Console.Write("판매할 아이템을 선택하세요 (취소 0) : ");
             string key = Console.ReadLine();
             Console.WriteLine("");
 
-            if(int.Parse(key) > 0 && int.Parse(key)<= inventory.Count)
-            for (int i = 1; i <= inventory.Count; i++)
-            {
-                if (int.Parse(key) == i)
+            if (int.Parse(key) > 0 && int.Parse(key) <= inventory.Count)
+                for (int i = 1; i <= inventory.Count; i++)
                 {
-                    Console.WriteLine($"{inventory[i - 1].name}를 구매합니다.");
-                    Console.WriteLine($"플레이어의 {longSword.enfo}이 {longSword.value} 감소하여 {attack -= longSword.value}이(가) 됩니다.");
-                    Console.WriteLine($"보유한 골드가 {longSword.price} 증가하여 {gold += longSword.price}G가 됩니다.\n");
-                    inventory.Add(longSword);
-                    SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                    if (int.Parse(key) == i)
+                    {
+                        if (inventory[i - 1].Equals(longSword))
+                        {
+                            Console.WriteLine($"{inventory[i - 1].name}를 판매합니다.");
+                            Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {attack -= inventory[i - 1].value}이(가) 됩니다.");
+                            Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
+                            inventory.Remove(inventory[i - 1]);
+                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                        }
+                        else if (inventory[i - 1].Equals(clothArmor))
+                        {
+                            Console.WriteLine($"{inventory[i - 1].name}를 판매합니다.");
+                            Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {defense -= inventory[i - 1].value}이(가) 됩니다.");
+                            Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
+                            inventory.Remove(inventory[i - 1]);
+                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                        }
+                        else if (inventory[i - 1].Equals(tearOfGoddess))
+                        {
+                            Console.WriteLine($"{inventory[i - 1].name}를 판매합니다.");
+                            Console.WriteLine($"플레이어의 {inventory[i - 1].enfo}이 {inventory[i - 1].value} 감소하여 {health -= inventory[i - 1].value}이(가) 됩니다.");
+                            Console.WriteLine($"보유한 골드가 {inventory[i - 1].price} 증가하여 {gold += inventory[i - 1].price}G가 됩니다.\n");
+                            inventory.Remove(inventory[i - 1]);
+                            SellMenuInput(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
+                        }
+                    }
+
                 }
-            }
-            else if(key == "0")
+
+            else if (key == "0")
             {
                 Render(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
             }
             else
             {
                 ItemSellMenu(ref gold, longSword, clothArmor, tearOfGoddess, ref attack, ref defense, ref health, ref inventory);
-            }                       
-        }            
-       
+            }
+        }
+
         #region Update
         static void Update()
         {
